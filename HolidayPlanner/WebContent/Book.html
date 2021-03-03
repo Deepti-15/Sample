@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html lang="en">
+<head>
+<title>Bootstrap Example</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
+</script>
+
+<script src="http://login2explore.com/jpdb/resources/js/0.0.3/jpdb-commons.js">
+</script>
+</head>
+<body>
+<div class="container">
+<h2>Book Your Tour!</h2>
+<form id="empForm" method="post" >
+<p>* indicates required fields.</p>
+<div class="form-group">
+<span><label for="tourName">Tour Name  *</label> <label id="CustIdMsg">
+</label></span>
+<input type="text" class="form-control" name="tourName" id="tourName"
+placeholder="Enter Tour Name" required>
+</div>
+<div class="form-group">
+<label for="custName"> Name  *</label>
+<input type="text" class="form-control" id="custName"
+placeholder="Enter Your Name" name="custName">
+</div>
+<div class="form-group">
+<label for="custEmail">Email  *</label>
+<input type="email" class="form-control" id="custEmail"  
+placeholder="Enter Your Email" name="custEmail"  required>
+</div>
+
+<div class="form-group">
+<label for="custContact"> Contact  *</label>
+<input type="text" class="form-control" id="custContact"   
+   value="" pattern="[0-9]{10}" data-minlength="10" data-maxlength="10"  data-component="textbox" aria-labelledby="label_14" minlength="10" maxlength="10" max="45"
+
+placeholder="Enter Your Contact Number" name="custContact">
+</div>
+
+<div class="form-group">
+<label for="custNumber">Number of Seats  *</label>
+<input type="text" class="form-control" id="custNumber"    value="" pattern="[0-9]{2}" data-minlength="1" data-minlength="2"  data-component="textbox" aria-labelledby="label_14" minlength="1" maxlength="2" max="45"
+placeholder="Enter Number of Seats" name="custNumber">
+</div>
+
+<input type="button" class="btn btn-primary" id="empSave" value="click to get your booking Id"
+onclick="generateRandom();">
+
+<p id="demo"></p>
+
+<script>
+function generateRandom() {
+  var x = document.getElementById("demo")
+  x = Math.floor((Math.random() * 1000000) + 1);
+  document.getElementById('custRandom').value= x; 
+}
+</script>
+
+<div class="form-group">
+<label for="custRandom"> Booking Id  *</label>
+<input type="email" class="form-control" id="custRandom"
+placeholder="Your Tour Booking Id" name="custRandom" >
+</div>
+
+<span>Tours will start from every Friday</span>
+<span>For online payment refer the below details and for more information contact : 987678</span></br></br>
+<span>acc.no-12321232121878454300 </span></br></br>
+		
+
+<input type="button" class="btn btn-primary" id="empSave" value="Book Tour"
+onclick="saveEmployee();">
+
+
+</form>
+</div>
+
+<script>
+$("#tourName").focus();
+function validateAndGetFormData() {
+var tourNameVar = $("#tourName").val();
+if (tourNameVar === "") {
+alert("Tour Name is Required Value");
+$("#tourName").focus();
+return "";
+}
+var custNameVar = $("#custName").val();
+if (custNameVar === "") {
+alert(" Name is Required Value");
+$("#custName").focus();
+return "";
+}
+var custEmailVar = $("#custEmail").val();
+if (custEmailVar === "") {
+alert("Email is Required Value");
+$("#custEmail").focus();
+return "";
+}
+
+var custContactVar = $("#custContact").val();
+if (custContactVar === "") {
+alert("Contact is Required Value");
+$("#custContact").focus();
+return "";
+}
+
+var custNumberVar = $("#custNumber").val();
+if (custNumberVar === "") {
+alert("Contact is Required Value");
+$("#custContact").focus();
+return "";
+}
+
+
+var custRandomVar = $("#custRandom").val();
+if (custRandomVar === "") {
+alert("Contact is Required Value");
+$("#custRandom").focus();
+return "";
+}
+
+var jsonStrObj = {
+tourName: tourNameVar,
+custName: custNameVar,
+custEmail: custEmailVar,
+custContact: custContactVar,
+custNumber: custNumberVar,
+custRandom: custRandomVar,
+
+};
+return JSON.stringify(jsonStrObj);
+}
+
+
+
+function resetForm() {
+$("#tourName").val("")
+$("#custName").val("");
+$("#custEmail").val("");
+$("#custContact").val("");
+$("#custNumber").val("");
+$("#custRandom").val("");
+$("#tourName").focus();
+}
+function saveEmployee() {
+var jsonStr = validateAndGetFormData();
+if (jsonStr === "") {
+return;
+}
+var putReqStr = createPUTRequest("90935315|-31948798674570080|90934384",
+jsonStr, "HolidayPlanner", "Cust-Rel");
+alert(putReqStr);
+jQuery.ajaxSetup({async: false});
+var resultObj = executeCommandAtGivenBaseUrl(putReqStr,
+"http://api.login2explore.com:5577", "/api/iml");
+alert(JSON.stringify(resultObj)); 
+jQuery.ajaxSetup({async: true});
+
+resetForm();
+}
+</script>
+</body>
+</html>
